@@ -88,6 +88,12 @@ if ($action === 'zip') {
 <h2>PHP File Manager</h2>
 <h3>Current Directory: <?php echo $dir; ?></h3>
 
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
+    <input type="hidden" name="dir" value="<?php echo $dir; ?>">
+    <input type="hidden" name="action" value="zip">
+    <input type="submit" value="Download Selected Files/Folders as ZIP">
+</form>
+
 <?php
 // List directories and files
 echo '<ul>';
@@ -95,7 +101,7 @@ echo '<li><a href="?dir='.dirname($dir).'">[Parent Directory]</a></li>';
 foreach (glob("$dir/*") as $item) {
     $name = basename($item);
     if (is_dir($item)) {
-        echo '<li class="directory"><a href="?dir='.$item.'">'.$name.'</a></li>';
+        echo '<li class="directory"><a href="?dir='.$item.'">'.$name.'</a> [<a href="?action=zip&files[]='.urlencode($item).'">Zip</a>]</li>';
     } else {
         echo '<li class="file">'.$name.' ('.formatSize(filesize($item)).')';
         echo ' [<a href="?action=copy&source='.urlencode($item).'&destination='.urlencode($dir.'/'.$name).'">Copy</a>]';
@@ -104,12 +110,6 @@ foreach (glob("$dir/*") as $item) {
 }
 echo '</ul>';
 ?>
-
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
-    <input type="hidden" name="dir" value="<?php echo $dir; ?>">
-    <input type="hidden" name="action" value="zip">
-    <input type="submit" value="Download Selected Files/Folders as ZIP">
-</form>
 
 </body>
 </html>
