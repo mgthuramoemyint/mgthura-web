@@ -30,13 +30,12 @@ if ($action === 'zip') {
             if (is_dir($file)) {
                 $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($file));
                 foreach ($iterator as $subFile) {
-                    // Add files to the zip, preserving directory structure
-                    if (!$iterator->isDot()) {
-                        $zip->addFile($subFile, $subFile->getPathname());
+                    if (!$subFile->isDir()) {
+                        $zip->addFile($subFile->getPathname(), $subFile->getPathname());
                     }
                 }
             } else {
-                $zip->addFile($file);
+                $zip->addFile($file, basename($file));
             }
         }
         $zip->close();
@@ -85,7 +84,7 @@ if ($action === 'zip') {
 </head>
 <body>
 
-<h2>PHP File Manager - Final</h2>
+<h2>PHP File Manager</h2>
 <h3>Current Directory: <?php echo $dir; ?></h3>
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
