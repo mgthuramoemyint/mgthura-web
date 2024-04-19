@@ -85,7 +85,7 @@ if ($action === 'zip') {
 </head>
 <body>
 
-<h2>PHP File Manager</h2>
+<h2>PHP File Manager - Final</h2>
 <h3>Current Directory: <?php echo $dir; ?></h3>
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
@@ -101,7 +101,7 @@ echo '<li><a href="?dir='.dirname($dir).'">[Parent Directory]</a></li>';
 foreach (glob("$dir/*") as $item) {
     $name = basename($item);
     if (is_dir($item)) {
-        echo '<li class="directory"><a href="?dir='.$item.'">'.$name.'</a> [<a href="?action=zip&files[]='.urlencode($item).'">Zip</a>]</li>';
+        echo '<li class="directory"><input type="checkbox" name="files[]" value="' . htmlspecialchars($item) . '">' . $name . ' [<a href="?action=zip&files[]=' . urlencode($item) . '">Zip</a>]</li>';
     } else {
         echo '<li class="file">'.$name.' ('.formatSize(filesize($item)).')';
         echo ' [<a href="?action=copy&source='.urlencode($item).'&destination='.urlencode($dir.'/'.$name).'">Copy</a>]';
